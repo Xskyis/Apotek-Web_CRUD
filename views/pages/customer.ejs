@@ -1,0 +1,53 @@
+<div class="container mb-5">
+    <h4 class="text-primary">Data Customer</h4>
+    <hr>
+    <ul class="list-group my-2">
+        <!--Menampilkan Data Customer-->
+        <!--Menggunakan forEach untuk scanning-->
+        <% data.forEach(element=> { %>
+            <li class="list-group-item p-4 ps-5">
+                <div class="row col-lg-12 ps-5">
+                    <div class="col-lg-3">
+                        <small class="text-info">Nama</small>
+                        <br>
+                        <%= element.nama_customer %>
+                    </div>
+                    <div class="col-lg-3">
+                        <small class="text-info">Alamat</small>
+                        <br>
+                        <%= element.alamat %>
+                    </div>
+                    <div class="col-lg-3">
+                        <small class="text-info">No.Telepon</small>
+                        <br>
+                        <%= element.telepon %>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <small class="text-info">Action</small> <br/>
+
+                        <a href="/customer/edit/<%= element.id %>">
+                            <button class="btn btn-sm btn-primary">
+                                Edit
+                            </button>
+                        </a>
+
+                        <a href="/customer/delete/<%= element.id %> "
+                            onclick="return confirm(`Apakah Anda yakin ingin menghapus data ini?`)">
+                            <button class="btn btn-sm btn-danger">
+                                Hapus
+                            </button>
+                        </a>
+
+                    </div>
+                </div>
+            </li>
+            <% }) %>
+    </ul>
+
+    <a href="/customer/add">
+        <button class="btn btn-md btn-success mb-3">
+            Tambah Data
+        </button>
+    </a>
+</div>

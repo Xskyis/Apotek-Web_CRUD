@@ -1,0 +1,165 @@
+<div class="container">
+    <h3 class="text-primary">Form Transaksi</h3>
+    <hr>
+
+    <form action="/transaksi/add" method="post">
+        Pilih Customer
+        <select name="id_customer" class="form-control mb-2">
+            <option value="">
+                <-- Pilih Customer -->
+            </option>
+            <% dataCustomer.forEach(element=> { %>
+                <option value="<%= element.id %>">
+                    <%= element.nama_customer %>
+                </option>
+                <% }) %>
+        </select>
+
+        No.faktur
+        <input type="text" name="no_faktur" class="form-control mb-2" value="<%= no_faktur %>" required>
+
+        Tanggal transaksi
+        <input type="date" name="tgl_transaksi" class="form-control mb-2" value="<%= tgl_transaksi %>" required>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#modalObat">
+            Tambah Pilihan obat
+        </button>
+
+        <!-- Tampilin Isi Cart nya -->
+        <h4 class="text-primary">List Cart Obat</h4>
+        <hr>
+        <ul class="list-group" style="margin-bottom: 20px;">
+            <% cart.forEach(element=> { %>
+                <li class="list-group-item">
+                    <div class="row justify-content-center ">
+                        <!-- Area untuk nama obat -->
+                        <div class="col-lg-3">
+                            <small class="text-info">Nama Obat</small>
+                            <h6>
+                                <%= element.nama_obat %>
+                            </h6>
+                        </div>
+                        <!-- Area utk jumlah beli-->
+                        <div class="col-lg-3">
+                            <small class="text-info">Jumlah Beli</small>
+                            <h6>
+                                <%= element.jumlah_beli %>
+                            </h6>
+                        </div>
+                        <!-- area utk jumlah satuan-->
+                        <div class="col-lg-3">
+                            <small class="text-info">Harga</small>
+                            <h6>
+                                <%= element.harga_beli %>
+                            </h6>
+                        </div>
+                        <!-- Area utk Total -->
+                        <div class="col-lg-2">
+                            <small class="text-info">Harga Total</small>
+                            <h6>
+                                <%= element.harga_beli * element.jumlah_beli %>
+                            </h6>
+                        </div>
+                        <div class="col-lg-1">
+                            <a href="/cart/<%= element.id_obat %>">
+                                <button type="button" class="btn btn-danger btn-sm m-2 ">
+                                    X
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <% }) %>
+        </ul>
+
+        <!-- membuat button simpan--> 
+            <% if (cart.length > 0) { %>
+                <button type="submit" class="btn btn-success">  
+                    Simpan Transaksi
+                </button>
+            <% } %>
+    </form>
+</div>
+
+
+
+
+<!-- modal (pop up ) obat -->
+<!-- button trogger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="modalObat" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Pilihan Obat</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/cart" method="post">
+                    Pilihan obat
+                    <select name="id_obat" class="form-control mb-2" required onchange="pilihObat(this.value)">
+                        <option value="">
+                            <-- Pilih Obat -->
+                        </option>
+                        <% dataObat.forEach(element=> { %>
+                            <option value="<%= element.id %>">
+                                <%= element.nama_obat %>
+                            </option>
+                            <% }) %>
+                    </select>
+                    Jumlah Beli
+                    <input type="number" name="jumlah_beli" class="form-control mb-2" required min="1" id="jumlah_beli"
+                        onchange="hitungTotal(this.value)" onkeyup="hitungTotal(this.value)" />
+
+                    Harga Satuan
+                    <input type="number" name="harga_beli" class="form-control mb-2" required readonly
+                        id="harga_beli" />
+
+                    Total
+                    <input type="number" name="total" class="form-control mb-2" required readonly id="total" />
+
+                    <button type="submit" class="btn btn-success w-100 mt-2 fw-semibold">
+                        Tambahkan Obat
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function pilihObat(id) {
+        // get data obat yg bertipe string dan kita kembalikan ke bentuk array
+        let obat = JSON.parse(`<%- dataObatString %>`)
+        // cari obat yg dipilih
+        let selectedObat = obat.find((item) => item.id == id)
+
+        // ambil data harganya
+        let harga = selectedObat.harga
+
+        // set value dari input harga_beli
+        document.getElementById('harga_beli').value = harga
+
+        // dapetin nilai dari jumlah_beli   
+        let jumlah_beli = Number(document.getElementById('jumlah_beli').value)
+
+        // hitung total
+        let total = harga * jumlah_beli
+
+        // tempel ke input total
+        document.getElementById('total').value = total
+    }
+
+    function hitungTotal(jumlah_beli) {
+        // dapetin nilai dari harga_beli
+        let harga_beli = Number(document.getElementById('harga_beli').value)
+
+        // hitung total
+        let total = harga_beli * jumlah_beli
+
+        // tempel ke input total
+        document.getElementById('total').value = total
+    }
+</script>

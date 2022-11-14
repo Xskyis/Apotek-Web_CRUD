@@ -1,0 +1,53 @@
+<div class="container mb-5">
+    <h4 class="text-primary">Data Apoteker</h4>
+    <hr>
+    <ul class="list-group my-2">
+        <!--Menampilkan Data Apoteker-->
+        <!--Menggunakan forEach untuk scanning-->
+        <% data.forEach(element=> { %>
+            <li class="list-group-item p-4 ps-5">
+                <div class="row col-lg-12 align-items-center">
+                    <div class="col-lg-3">
+                        <small class="text-info">Nama Apoteker</small>
+                        <br>
+                        <%= element.nama_apoteker %>
+                    </div>
+                    <div class="col-lg-3">
+                        <small class="text-info">Username</small>
+                        <br>
+                        <%= element.username %>
+                    </div>
+                    <div class="pw col-lg-3">
+                        <small class="text-info">Password</small>
+                        <br>
+                        <%= element.password %>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <small class="text-info">Action</small> <br />
+
+                        <a href="/apoteker/edit/<%= element.id %>">
+                            <button class="btn btn-sm btn-primary" style="font-weight: 500;">
+                                Edit
+                            </button>
+                        </a>
+
+                        <a href="/apoteker/delete/<%= element.id %> "
+                            onclick="return confirm(`Apakah Anda yakin ingin menghapus data ini?`)">
+                            <button class="btn btn-sm btn-danger" style="font-weight: 500;">
+                                Hapus
+                            </button>
+                        </a>
+                        
+                    </div>
+                </div>
+            </li>
+            <% }) %>
+    </ul>
+
+    <a href="/apoteker/add">
+        <button class="btn btn-md btn-success mb-3">
+            Tambah Data
+        </button>
+    </a>
+</div>
